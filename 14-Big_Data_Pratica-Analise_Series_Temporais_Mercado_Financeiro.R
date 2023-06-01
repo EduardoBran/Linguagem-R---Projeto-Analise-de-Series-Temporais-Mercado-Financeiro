@@ -37,4 +37,23 @@ library(moments)
 
 
 
+# Seleção do período de análise (definindo data para início e fim para buscar cotações de ações neste período)
+
+start_date <- as.Date("2018-01-21")
+end_date <- as.Date("2018-06-21")
+
+
+# Download dos dados do périodo
+
+# - Através da função getSymbols() do pacote quantmod informamos a empresa que iremos buscar as ações ("PETR4.SA" - Petrobras).
+#   Tem que saber o código da empresa no Mercado de Ações. Cada empresa listada na bolsa de valores tem um código.
+# - Informo a fonte ("yahoo", pode ser google), informo datas de início e fim
+
+getSymbols("PETR4.SA", src = "yahoo", from = start_date, to = end_date, auto.assign = T)
+
+class(PETR4.SA)
+
+View(PETR4.SA)
+
+
 
