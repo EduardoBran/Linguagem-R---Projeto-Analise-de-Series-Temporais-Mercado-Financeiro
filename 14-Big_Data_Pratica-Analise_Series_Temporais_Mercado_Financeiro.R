@@ -24,6 +24,7 @@ library(quantmod)
 library(xts)
 library(moments)
 
+library(dplyr)
 
 
 # - Uma série temporal é uma sequência de observações coletadas em intervalos de tempo regular, como horas, dias, semanas, meses ou anos.
@@ -43,6 +44,7 @@ start_date <- as.Date("2018-01-21")
 end_date <- as.Date("2018-06-21")
 
 
+
 # Download dos dados do périodo
 
 # - Através da função getSymbols() do pacote quantmod informamos a empresa que iremos buscar as ações ("PETR4.SA" - Petrobras).
@@ -52,8 +54,98 @@ end_date <- as.Date("2018-06-21")
 getSymbols("PETR4.SA", src = "yahoo", from = start_date, to = end_date, auto.assign = T)
 
 class(PETR4.SA)
-
 View(PETR4.SA)
 
+
+
+# - O índice é a data. Isso que caracteria uma série temporal.
+
+
+
+# Analisando/exbindo os dados de fechamento (Coluna "PETR4.SA.Close")
+
+PETR4.SA.Close <- PETR4.SA[, "PETR4.SA.Close"]    # filtrando apenas coluna .Close . Não dá para fazer com dplyr por causa da classe
+View(PETR4.SA.Close)
+
+
+
+# Plotando o gráfico da Petrobras (gráfico de candlestick ou gráfico de velas da Petrobras)
+
+candleChart(PETR4.SA)
+candleChart(PETR4.SA.Close)
+
+
+
+# Plotando o gráfico de fechamento
+
+plot(PETR4.SA.Close, main = "Fechamento Diário Ações Petrobrás",
+     col = 'red', xlab = 'Data', ylab = 'Preço',
+     major.ticks = 'months', minor.ticks = FALSE)                         # demarcações de datas
+
+?plot
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Construindo gráfico com ggplot
+
+
+library(ggplot2)
+library(gridExtra)
+
+# Obter dados da ação PETR4.SA
+getSymbols("PETR4.SA", src = "yahoo", from = start_date, to = end_date, auto.assign = T)
+
+# Converter os dados em um data frame
+df <- as.data.frame(PETR4.SA)
+View(df)
+summary(df)
+
+# Ajustar o formato dos dados
+df <- data.frame(Date = index(df), df)
+summary(df)
+
+# Criar o gráfico de velas com ggplot2
+candlestick_plot <- ggplot(df, aes(x = Date)) +
+  geom_segment(aes(xend = Date, y = PETR4.SA.High, yend = PETR4.SA.Low), color = "black") +
+  geom_rect(aes(xmin = Date - 0.2, xmax = Date + 0.2, ymin = PETR4.SA.Open, ymax = PETR4.SA.Close), fill = "white", color = "black") +
+  labs(title = "Gráfico de Velas - PETR4.SA") +
+  theme_minimal()
+
+candlestick_plot
+
+# Criar o gráfico do preço de fechamento
+close_plot <- ggplot(df, aes(x = Date, y = PETR4.SA.Close)) +
+  geom_line(color = "blue") +
+  labs(title = "Preço de Fechamento - PETR4.SA") +
+  theme_minimal()
+
+close_plot
+
+# Combinar os gráficos em um único painel
+combined_plot <- grid.arrange(candlestick_plot, close_plot, nrow = 2)
+
+# Exibir o gráfico combinado
+combined_plot
 
 
