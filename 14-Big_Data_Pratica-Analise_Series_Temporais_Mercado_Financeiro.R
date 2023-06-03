@@ -86,6 +86,55 @@ plot(PETR4.SA.Close, main = "Fechamento Diário Ações Petrobrás",
 
 
 
+# Adicionando as bandas de bollinger ao gráfico.
+
+# - As Bandas de Bollinger são um indicador técnico utilizado na análise de séries temporais, especialmente no mercado financeiro.
+# - Elas consistem em três linhas traçadas em um gráfico de preços: uma linha central e duas bandas, uma superior e uma inferior,
+#   que são calculadas a partir do desvio padrão dos preços.
+
+# - Iremos adicionar bandas de bollinger com média de 20 períodos e 2 desvios
+# - Mercados mais voláteis possuem as bandas mais distantes da média, mercados menos voláteis possuas bandas mais próximas a média.
+
+# - No caso específico do código fornecido, estamos usando uma média móvel de 20 períodos e 2 desvios padrão.
+# - Esses valores são comumente utilizados como parâmetros padrão para as Bandas de Bollinger, apesar que pode variar de acordo com o projeto
+# - As Bandas de Bollinger são amplamente utilizadas na análise técnica para identificar condições de sobrecompra e sobrevenda, bem como
+#   para detectar possíveis reversões de tendência.
+
+addBBands(n = 20, sd = 2)
+
+
+
+# Adicionando o indicador ADX, média 11 do tipo exponencial
+
+# - Adiciona o indicador ADX (Average Directional Index) ao gráfico existente. É um indicador técnico utilizado na análise de séries temporais.
+# - Os parâmetros utilizados são "n" e "maType". O parâmetro "n" representa o número de períodos para calcular a média do indicador ADX,
+#   e no código fornecido está definido como 11. O parâmetro "maType" especifica o tipo de média a ser usada no cálculo do ADX, e no caso
+#   do código fornecido, está definido como "EMA" (Exponential Moving Average), ou seja, média móvel exponencial.
+# - O valor da média de 11 períodos é uma escolha arbitrária e pode ser ajustado de acordo com as preferências do analista ou as
+#   características do ativo ou mercado sendo analisado. Geralmente, o ADX é calculado usando médias móveis de 14 períodos,
+
+addADX(n = 11, maType = "EMA")
+
+
+
+
+
+
+
+
+# Salvando os dados em um arquivo .rds (arquivo em formato binário do R)
+
+saveRDS(PETR4.SA, file = "PETR4.SA.rds")
+
+# Carregando dados
+
+Ptr = readRDS("PETR4.SA.rds")
+
+
+
+
+
+
 
 
 
