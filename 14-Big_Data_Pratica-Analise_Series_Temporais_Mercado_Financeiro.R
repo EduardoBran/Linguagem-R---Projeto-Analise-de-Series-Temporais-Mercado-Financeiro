@@ -117,6 +117,45 @@ addADX(n = 11, maType = "EMA")
 
 
 
+# Calculando logs diários
+
+# - A função log() é aplicada aos preços de fechamento da ação da Petrobras, transformando-os em seus respectivos logaritmos naturais.
+# - Em seguida, a função diff() é utilizada para calcular a diferença entre os logaritmos diários consecutivos, especificando o argumento
+#   lag = 1. Essa diferença representa a variação logarítmica diária do preço de fechamento da ação.
+# - O cálculo dos logs diários é comumente utilizado em análises de séries temporais financeiras, pois permite uma melhor visualização e
+#   interpretação das variações percentuais diárias dos preços. Ao utilizar os logaritmos, as variações percentuais são transformadas em
+#   variações lineares, facilitando a análise e a modelagem dessas variações.
+# - Os logs diários são úteis para identificar padrões, tendências e volatilidade dos preços de um ativo financeiro ao longo do tempo.
+
+PETR4.SA.logs_diarios <- 
+  diff(log(PETR4.SA.Close), lag = 1)
+
+View(PETR4.SA.logs_diarios)
+
+
+# Buscando / removendo valores NA
+
+anyNA(PETR4.SA.logs_diarios) # retorna valor booleano
+which(is.na(PETR4.SA.logs_diarios)) # retorna o índice onde está o valor NA
+
+PETR4.SA.logs_diarios <- PETR4.SA.logs_diarios[-1]
+
+
+
+# Plota a taxa de retorno
+
+# - Foi feita a alteração acima onde aplicamos cálculo de logaritmo nos valores da coluna "PETR4.SA.Close" do objeto PETR4.SA.Close
+#   e assim conseguimos alterar a escala do nosso gráfico para podermos visualizar melhor o gráfico de fechamento das ações
+# - A utilização dos logaritmos dos retornos é uma prática comum em análise financeira, pois permite uma melhor visualização das
+#   variações percentuais ao longo do tempo, especialmente quando essas variações são muito grandes. Dessa forma, o gráfico oferece
+#   uma perspectiva mais clara das mudanças nos retornos diários das ações da Petrobrás.
+
+plot(PETR4.SA.logs_diarios, main = 'Fechamento Diário das Ações da Petrobrás',
+     col = 'red', xlab = 'Data', ylab = 'Retorno',
+     major.ticks = 'months', minor.ticks = FALSE)
+
+
+
 
 
 
