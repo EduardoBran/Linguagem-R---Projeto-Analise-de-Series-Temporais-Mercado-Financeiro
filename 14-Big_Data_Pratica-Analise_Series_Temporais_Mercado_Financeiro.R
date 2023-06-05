@@ -167,6 +167,18 @@ candleChart(PETR4.SA.logs_diarios)
 
 
 
+# Calculando algumas medidas estatísticas
+
+statNames <- c('Mean', 'Standard Deviation', 'Skewness', 'Kurtosis')
+
+PETR4.SA.stats <- c(mean(PETR4.SA.logs_diarios), sd(PETR4.SA.logs_diarios),
+                    skewness(PETR4.SA.logs_diarios), kurtosis(PETR4.SA.logs_diarios))
+
+names(PETR4.SA.stats) <- statNames
+
+PETR4.SA.stats
+
+
 
 
 # Salvando os dados em um arquivo .rds (arquivo em formato binário do R)
