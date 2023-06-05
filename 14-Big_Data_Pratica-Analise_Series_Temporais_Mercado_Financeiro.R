@@ -82,8 +82,6 @@ plot(PETR4.SA.Close, main = "Fechamento Diário Ações Petrobrás",
      col = 'red', xlab = 'Data', ylab = 'Preço',
      major.ticks = 'months', minor.ticks = FALSE)                         # demarcações de datas
 
-?plot
-
 
 
 # Adicionando as bandas de bollinger ao gráfico.
@@ -92,7 +90,7 @@ plot(PETR4.SA.Close, main = "Fechamento Diário Ações Petrobrás",
 # - Elas consistem em três linhas traçadas em um gráfico de preços: uma linha central e duas bandas, uma superior e uma inferior,
 #   que são calculadas a partir do desvio padrão dos preços.
 
-# - Iremos adicionar bandas de bollinger com média de 20 períodos e 2 desvios
+# - Iremos adicionar bandas de bollinger com média de 20 períodos e 2 desvios padrão
 # - Mercados mais voláteis possuem as bandas mais distantes da média, mercados menos voláteis possuas bandas mais próximas a média.
 
 # - No caso específico do código fornecido, estamos usando uma média móvel de 20 períodos e 2 desvios padrão.
@@ -126,6 +124,16 @@ addADX(n = 11, maType = "EMA")
 #   interpretação das variações percentuais diárias dos preços. Ao utilizar os logaritmos, as variações percentuais são transformadas em
 #   variações lineares, facilitando a análise e a modelagem dessas variações.
 # - Os logs diários são úteis para identificar padrões, tendências e volatilidade dos preços de um ativo financeiro ao longo do tempo.
+# - Esta aplicação foi feita para melhor visualização dos dados no gráfico abaixo
+
+# - A função log() é comumente usada para transformar valores que têm uma distribuição assimétrica em uma escala logarítmica. Essa
+#   transformação pode ajudar a reduzir a variação entre os valores extremos e destacar as diferenças entre os valores menores. Isso é
+#   particularmente útil quando os dados possuem uma ampla faixa de valores.
+# - Ao aplicar a função diff() após a transformação logarítmica, estamos calculando as diferenças entre os valores consecutivos dos
+#   logaritmos. Isso pode ajudar a identificar as mudanças relativas entre os valores ao longo do tempo ou sequência.
+# - E ao plotar os dados transformados e suas diferenças no gráfico mais abaixo, podemos obter uma representação visual mais clara das
+#   tendências, padrões ou mudanças nos dados originais. Essa abordagem pode facilitar a interpretação e análise dos dados,
+#   especialmente em casos em que os valores originais têm uma variação ampla ou são assimetricamente distribuídos.
 
 PETR4.SA.logs_diarios <- 
   diff(log(PETR4.SA.Close), lag = 1)
@@ -138,7 +146,7 @@ View(PETR4.SA.logs_diarios)
 anyNA(PETR4.SA.logs_diarios) # retorna valor booleano
 which(is.na(PETR4.SA.logs_diarios)) # retorna o índice onde está o valor NA
 
-PETR4.SA.logs_diarios <- PETR4.SA.logs_diarios[-1]
+PETR4.SA.logs_diarios <- PETR4.SA.logs_diarios[-1] # remove primeira linha
 
 
 
@@ -155,7 +163,7 @@ plot(PETR4.SA.logs_diarios, main = 'Fechamento Diário das Ações da Petrobrás
      major.ticks = 'months', minor.ticks = FALSE)
 
 
-
+candleChart(PETR4.SA.logs_diarios)
 
 
 
@@ -235,5 +243,36 @@ combined_plot <- grid.arrange(candlestick_plot, close_plot, nrow = 2)
 
 # Exibir o gráfico combinado
 combined_plot
+
+
+
+
+
+
+
+
+
+
+# Criando uma lista de valores 
+lista  <- c(5, 10, 15, 20, 25)              # variação maior entre os valores
+lista2 <- c(2, 3, 2, 4, 2, 2, 3, 2, 2)      # variação menor entre os valores
+
+
+# Calculando o desvio padrão
+desvio_padrao <- sd(lista)
+desvio_padrao2 <- sd(lista2)
+
+mean(lista2)
+
+
+# Exibindo o valor do desvio padrão
+desvio_padrao
+desvio_padrao2
+
+
+plot(lista2, main = "Lista 2",
+     col = 'red', xlab = 'Data', ylab = 'Preço')
+addBBands(n = 20, sd = 2)
+
 
 
